@@ -1,5 +1,5 @@
-#ifndef HEAP_H
-#define HEAP_H
+#ifndef JOB_RANKER_H
+#define JOB_RANKER_H
 
 #include <string.h>
 

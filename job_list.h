@@ -1,5 +1,5 @@
-#ifndef JOB_H
-#define JOB_H
+#ifndef JOB_LIST_H
+#define JOB_LIST_H
 
 #include "skill_set.h"
 
@@ -56,7 +56,7 @@ void initializeJobs(Job jobs[], int* count) {
 }
 
 // 🔥 UPDATED ANALYSIS FUNCTION
-float analyzeJob(Job job) {
+float analyzeJob(Job job, char allMissing[][50], int* totalMissing) {
     int matched = 0, total = 0;
 
     char missing[20][50];
@@ -76,8 +76,21 @@ float analyzeJob(Job job) {
             matched++;
         } else {
             strcpy(missing[missCount++], temp->skill);
-        }
 
+            // 🔥 Add to global list (avoid duplicates)
+            int found = 0;
+            for(int i = 0; i < *totalMissing; i++) {
+                if(strcmp(allMissing[i], temp->skill) == 0) {
+                    found = 1;
+                    break;
+                }
+            }
+
+            if(!found) {
+                strcpy(allMissing[*totalMissing], temp->skill);
+                (*totalMissing)++;
+            }
+        }
         temp = temp->next;
     }
 
