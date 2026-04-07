@@ -11,7 +11,16 @@ typedef struct skillNode {
 typedef struct job {
     char jobName[50];
     SkillNode* skillList;
+    struct job* next;
 } Job;
+
+Job* createJob(char* name) {
+    Job* j = malloc(sizeof(Job));
+    strcpy(j->jobName, name);
+    j->skillList = NULL;
+    j->next = NULL;
+    return j;
+}
 
 // Add skill to job
 void addSkill(Job* job, char* skill) {
@@ -22,51 +31,63 @@ void addSkill(Job* job, char* skill) {
     job->skillList = newNode;
 }
 
+Job* insertJob(Job* head, Job* newJob) {
+    if(head==NULL) return newJob;
+
+    Job* temp = head;
+    while(temp->next) temp = temp->next;
+    temp->next = newJob;
+    return head;
+}
+
 // Initialize jobs
-void initializeJobs(Job jobs[], int* count) {
-    *count = 4;
+Job* initializeJobs() {
+    Job* head = NULL;
+    Job* j;
 
-    strcpy(jobs[0].jobName, "Software Engineer");
-    jobs[0].skillList = NULL;
-    addSkill(&jobs[0], "C");
-    addSkill(&jobs[0], "DSA");
-    addSkill(&jobs[0], "DBMS");
-    addSkill(&jobs[0], "OS");
+    j = createJob("Software Engineer");
+    addSkill(j, "C");
+    addSkill(j, "DSA");
+    addSkill(j, "DBMS");
+    addSkill(j, "OS");
+    head = insertJob(head,j);
 
-    strcpy(jobs[1].jobName, "Game Developer");
-    jobs[1].skillList = NULL;
-    addSkill(&jobs[1], "C++");
-    addSkill(&jobs[1], "DSA");
-    addSkill(&jobs[1], "Math");
-    addSkill(&jobs[1], "Graphics");
+    j = createJob("Game Developer");
+    addSkill(j, "C++");
+    addSkill(j, "DSA");
+    addSkill(j, "Math");
+    addSkill(j, "Graphics");
+    head = insertJob(head,j);
 
-    strcpy(jobs[2].jobName, "Web Developer");
-    jobs[2].skillList = NULL;
-    addSkill(&jobs[2], "HTML");
-    addSkill(&jobs[2], "CSS");
-    addSkill(&jobs[2], "JavaScript");
-    addSkill(&jobs[2], "React");
+    j = createJob("Web Developer");
+    addSkill(j, "HTML");
+    addSkill(j, "CSS");
+    addSkill(j, "JavaScript");
+    addSkill(j, "React");
+    head = insertJob(head,j);
 
-    strcpy(jobs[3].jobName, "Data Analyst");
-    jobs[3].skillList = NULL;
-    addSkill(&jobs[3], "Python");
-    addSkill(&jobs[3], "SQL");
-    addSkill(&jobs[3], "Statistics");
-    addSkill(&jobs[3], "Excel");
+    j = createJob("Data Analyst");
+    addSkill(j, "Python");
+    addSkill(j, "SQL");
+    addSkill(j, "Statistics");
+    addSkill(j, "Excel");
+    head = insertJob(head,j);
+
+    return head;
 }
 
 // 🔥 UPDATED ANALYSIS FUNCTION
-float analyzeJob(Job job, char allMissing[][50], int* totalMissing) {
+float analyzeJob(Job* job, char allMissing[][50], int* totalMissing) {
     int matched = 0, total = 0;
 
     char missing[20][50];
     int missCount = 0;
 
-    printf("\nJob Role: %s\n", job.jobName);
+    printf("\nJob Role: %s\n", job->jobName);
 
     printf("Matched Skills:\n");
 
-    SkillNode* temp = job.skillList;
+    SkillNode* temp = job->skillList;
 
     while(temp) {
         total++;

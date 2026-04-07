@@ -6,14 +6,12 @@
 #include "learning_path.h"
 
 int main() {
-    Job jobs[10];
-    int jobCount;
+    Job* head=initializeJobs();
 
     hashTable = createHashTable(tableSize);
     indexTable = createIndexTable(tableSize);
 
-    initializeJobs(jobs, &jobCount);
-    buildIndex(jobs, jobCount);
+    buildIndex(head);
 
     int n;
     char skill[50];
@@ -35,11 +33,16 @@ int main() {
 
     MaxHeap heap = {.size = 0};
 
-    for(int i = 0; i < jobCount; i++) {
+    Job* temp=head;
+
+    while(temp){
         Result r;
-        strcpy(r.jobName, jobs[i].jobName);
-        r.matchPercent = analyzeJob(jobs[i], allMissing, &totalMissing);
-        insertHeap(&heap, r);
+        strcpy(r.jobName,temp->jobName);
+
+        r.matchPercent=analyzeJob(temp,allMissing,&totalMissing);
+
+        insertHeap(&heap,r);
+        temp=temp->next;
     }
 
     printf("\n=== Job Ranking ===\n");

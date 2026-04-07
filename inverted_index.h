@@ -49,13 +49,21 @@ void addToIndex(char skill[], char jobName[]) {
     indexTable[index] = newIndex;
 }
 
-void buildIndex(Job jobs[], int jobCount) {
-    for(int i = 0; i < jobCount; i++) {
-        SkillNode* temp = jobs[i].skillList;
-        while(temp) {
-            addToIndex(temp->skill, jobs[i].jobName);
-            temp = temp->next;
+void buildIndex(Job* head) {
+    for(int i = 0; i < 50; i++)
+        indexTable[i] = NULL;
+
+    Job* temp = head;
+
+    while(temp) {
+        SkillNode* s = temp->skillList;
+
+        while(s) {
+            addToIndex(s->skill, temp->jobName);
+            s = s->next;
         }
+
+        temp = temp->next;
     }
 }
 
