@@ -1,3 +1,5 @@
+//for storing student skills we are using hashing
+
 #ifndef SKILL_SET_H
 #define SKILL_SET_H
 
@@ -17,29 +19,42 @@ Node** hashTable;
 int tableSize = INITIAL_SIZE;
 int elementCount = 0;
 
-void toLowerCase(char str[]) {
+void toLowerCase(char str[]) 
+{
     for(int i = 0; str[i]; i++)
+    {
         if(str[i] >= 'A' && str[i] <= 'Z')
+        {
             str[i] += 32;
+        }     
+    }     
 }
 
-unsigned long hashFunction(char str[]) {
+unsigned long hashFunction(char str[]) 
+{
     unsigned long hash = 5381;
     int c;
     while ((c = *str++))
+    {
         hash = ((hash << 5) + hash) + c;
+    }
     return hash % tableSize;
 }
 
-Node** createHashTable(int size) {
+Node** createHashTable(int size) 
+{
     Node** table = (Node**)malloc(size * sizeof(Node*));
-    for(int i = 0; i < size; i++) table[i] = NULL;
+    for(int i = 0; i < size; i++)
+    {
+        table[i] = NULL;
+    } 
     return table;
 }
 
 void insert(char* skill);
 
-void rehash() {
+void rehash() 
+{
     Node** oldTable = hashTable;
     int oldSize = tableSize;
 
@@ -47,9 +62,11 @@ void rehash() {
     hashTable = createHashTable(tableSize);
     elementCount = 0;
 
-    for(int i = 0; i < oldSize; i++) {
+    for(int i = 0; i < oldSize; i++) 
+    {
         Node* temp = oldTable[i];
-        while(temp) {
+        while(temp) 
+        {
             insert(temp->skill);
             temp = temp->next;
         }
@@ -57,9 +74,13 @@ void rehash() {
     free(oldTable);
 }
 
-void insert(char* skill) {
+void insert(char* skill) 
+{
     float load = (float)elementCount / tableSize;
-    if(load > LOAD_FACTOR) rehash();
+    if(load > LOAD_FACTOR)
+    {
+        rehash();
+    } 
 
     int index = hashFunction(skill);
 
@@ -71,13 +92,17 @@ void insert(char* skill) {
     elementCount++;
 }
 
-int search(char* skill) {
+int search(char* skill) 
+{
     int index = hashFunction(skill);
     Node* temp = hashTable[index];
 
-    while(temp) {
+    while(temp) 
+    {
         if(strcmp(temp->skill, skill) == 0)
+        {
             return 1;
+        }
         temp = temp->next;
     }
     return 0;

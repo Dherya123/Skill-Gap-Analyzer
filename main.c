@@ -5,7 +5,8 @@
 #include "inverted_index.h"
 #include "learning_path.h"
 
-int main() {
+int main() 
+{
     Job jobs[10];
     int jobCount;
 
@@ -26,7 +27,8 @@ int main() {
 
     printf("Enter the Skills you have: \n");
 
-    for(int i = 0; i < n; i++) {
+    for(int i = 0; i < n; i++) 
+    {
         fgets(skill, sizeof(skill), stdin);
         skill[strcspn(skill, "\n")] = 0;
         toLowerCase(skill);
@@ -35,7 +37,8 @@ int main() {
 
     MaxHeap heap = {.size = 0};
 
-    for(int i = 0; i < jobCount; i++) {
+    for(int i = 0; i < jobCount; i++) 
+    {
         Result r;
         strcpy(r.jobName, jobs[i].jobName);
         r.matchPercent = analyzeJob(jobs[i], allMissing, &totalMissing);
@@ -50,7 +53,8 @@ int main() {
 
     generateLearningPath(allMissing, totalMissing);
 
-    while(1) {
+    while(1) 
+    {
         printf("\nSearch skill (press q to quit): ");
 
         fgets(skill, sizeof(skill), stdin);
@@ -60,7 +64,8 @@ int main() {
         toLowerCase(skill);
 
         // 🔴 Exit condition
-        if(strcmp(skill, "q") == 0) {
+        if(strcmp(skill, "q") == 0) 
+        {
             printf("Exiting program...\n");
             break;
         }

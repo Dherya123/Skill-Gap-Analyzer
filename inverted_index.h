@@ -3,12 +3,14 @@
 
 #include "job_list.h"
 
-typedef struct jobNode {
+typedef struct jobNode 
+{
     char jobName[50];
     struct jobNode* next;
 } JobNode;
 
-typedef struct indexNode {
+typedef struct indexNode 
+{
     char skill[50];
     JobNode* jobList;
     struct indexNode* next;
@@ -16,18 +18,25 @@ typedef struct indexNode {
 
 IndexNode** indexTable;
 
-IndexNode** createIndexTable(int size) {
+IndexNode** createIndexTable(int size) 
+{
     IndexNode** table = (IndexNode**)malloc(size * sizeof(IndexNode*));
-    for(int i = 0; i < size; i++) table[i] = NULL;
+    for(int i = 0; i < size; i++)
+    {
+        table[i] = NULL;
+    } 
     return table;
 }
 
-void addToIndex(char skill[], char jobName[]) {
+void addToIndex(char skill[], char jobName[]) 
+{
     int index = hashFunction(skill);
     IndexNode* temp = indexTable[index];
 
-    while(temp) {
-        if(strcmp(temp->skill, skill) == 0) {
+    while(temp) 
+    {
+        if(strcmp(temp->skill, skill) == 0) 
+        {
             JobNode* j = (JobNode*)malloc(sizeof(JobNode));
             strcpy(j->jobName, jobName);
             j->next = temp->jobList;
@@ -49,21 +58,26 @@ void addToIndex(char skill[], char jobName[]) {
     indexTable[index] = newIndex;
 }
 
-void buildIndex(Job jobs[], int jobCount) {
-    for(int i = 0; i < jobCount; i++) {
+void buildIndex(Job jobs[], int jobCount) 
+{
+    for(int i = 0; i < jobCount; i++) 
+    {
         SkillNode* temp = jobs[i].skillList;
-        while(temp) {
+        while(temp) 
+        {
             addToIndex(temp->skill, jobs[i].jobName);
             temp = temp->next;
         }
     }
 }
 
-void searchBySkill(char skill[]) {
+void searchBySkill(char skill[]) 
+{
     int index = hashFunction(skill);
 
     // 🔴 Base Case 1: No index table
-    if(indexTable == NULL) {
+    if(indexTable == NULL) 
+    {
         printf("Index not initialized\n");
         return;
     }
@@ -71,26 +85,31 @@ void searchBySkill(char skill[]) {
     IndexNode* temp = indexTable[index];
 
     // 🔴 Base Case 2: No skill at this index
-    if(temp == NULL) {
+    if(temp == NULL) 
+    {
         printf("No jobs found for this skill\n");
         return;
     }
 
     // ✅ Iterative traversal
-    while(temp != NULL) {
+    while(temp != NULL) 
+    {
 
-        if(strcmp(temp->skill, skill) == 0) {
+        if(strcmp(temp->skill, skill) == 0) 
+        {
             printf("\nJobs requiring '%s':\n", skill);
 
             JobNode* j = temp->jobList;
 
             // 🔴 Base Case 3: No jobs linked
-            if(j == NULL) {
+            if(j == NULL) 
+            {
                 printf("No jobs available\n");
                 return;
             }
 
-            while(j != NULL) {
+            while(j != NULL) 
+            {
                 printf("%s\n", j->jobName);
                 j = j->next;
             }

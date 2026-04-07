@@ -3,18 +3,21 @@
 
 #include "skill_set.h"
 
-typedef struct skillNode {
+typedef struct skillNode 
+{
     char skill[50];
     struct skillNode* next;
 } SkillNode;
 
-typedef struct job {
+typedef struct job 
+{
     char jobName[50];
     SkillNode* skillList;
 } Job;
 
 // Add skill to job
-void addSkill(Job* job, char* skill) {
+void addSkill(Job* job, char* skill) 
+{
     SkillNode* newNode = (SkillNode*)malloc(sizeof(SkillNode));
     strcpy(newNode->skill, skill);
     toLowerCase(newNode->skill);
@@ -23,7 +26,8 @@ void addSkill(Job* job, char* skill) {
 }
 
 // Initialize jobs
-void initializeJobs(Job jobs[], int* count) {
+void initializeJobs(Job jobs[], int* count) 
+{
     *count = 4;
 
     strcpy(jobs[0].jobName, "Software Engineer");
@@ -56,7 +60,8 @@ void initializeJobs(Job jobs[], int* count) {
 }
 
 // 🔥 UPDATED ANALYSIS FUNCTION
-float analyzeJob(Job job, char allMissing[][50], int* totalMissing) {
+float analyzeJob(Job job, char allMissing[][50], int* totalMissing) 
+{
     int matched = 0, total = 0;
 
     char missing[20][50];
@@ -68,25 +73,31 @@ float analyzeJob(Job job, char allMissing[][50], int* totalMissing) {
 
     SkillNode* temp = job.skillList;
 
-    while(temp) {
+    while(temp) 
+    {
         total++;
 
-        if(search(temp->skill)) {
+        if(search(temp->skill)) 
+        {
             printf("✔ %s\n", temp->skill);
             matched++;
-        } else {
+        } else 
+        {
             strcpy(missing[missCount++], temp->skill);
 
             // 🔥 Add to global list (avoid duplicates)
             int found = 0;
-            for(int i = 0; i < *totalMissing; i++) {
-                if(strcmp(allMissing[i], temp->skill) == 0) {
+            for(int i = 0; i < *totalMissing; i++) 
+            {
+                if(strcmp(allMissing[i], temp->skill) == 0) 
+                {
                     found = 1;
                     break;
                 }
             }
 
-            if(!found) {
+            if(!found) 
+            {
                 strcpy(allMissing[*totalMissing], temp->skill);
                 (*totalMissing)++;
             }
@@ -96,10 +107,13 @@ float analyzeJob(Job job, char allMissing[][50], int* totalMissing) {
 
     printf("Missing Skills:\n");
 
-    if(missCount == 0) {
+    if(missCount == 0) 
+    {
         printf("None\n");
-    } else {
-        for(int i = 0; i < missCount; i++) {
+    } else 
+    {
+        for(int i = 0; i < missCount; i++) 
+        {
             printf("✘ %s\n", missing[i]);
         }
     }
